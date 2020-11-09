@@ -22,7 +22,18 @@ namespace Open.Journaling.EntityFrameworkCore.Tests
                 "User ID=sa;" +
                 "Password=4xp6euati4lrcume4xeb";
 
-            IsServerAvailable = true;
+            try
+            {
+                using var connection = new SqlConnection(ConnectionString);
+
+                connection.Open();
+
+                IsServerAvailable = true;
+            }
+            catch (SqlException)
+            {
+                IsServerAvailable = false;
+            }
 
             _cache = new ConcurrentDictionary<string, string>();
         }
@@ -33,6 +44,11 @@ namespace Open.Journaling.EntityFrameworkCore.Tests
 
         public void Dispose()
         {
+            if (!IsServerAvailable)
+            {
+                return;
+            }
+
             using var connection = new SqlConnection(ConnectionString);
             connection.Open();
 
