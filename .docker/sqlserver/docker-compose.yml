@@ -1,0 +1,15 @@
+version: '3.2'
+
+services:
+  server:
+    image: mcr.microsoft.com/mssql/server:2017-CU8-ubuntu
+
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_PID: Developer
+      SA_PASSWORD: 4xp6euati4lrcume4xeb
+
+    ports:
+      - 1433:1433
+
+    #restart: always
